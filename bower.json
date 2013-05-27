@@ -1,0 +1,10 @@
+{
+  "name": "gridster.js",
+  "version": "0.2.0",
+  "main": "dist/jquery.gridster.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ]
+}
