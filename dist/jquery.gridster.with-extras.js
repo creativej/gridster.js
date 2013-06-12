@@ -847,7 +847,7 @@
         this.$wrapper.addClass('ready');
         this.draggable();
 
-        $(window).bind(
+        $(window).on(
             'resize', throttle($.proxy(this.recalculate_faux_grid, this), 200));
     };
 
@@ -906,24 +906,33 @@
             this.empty_cells(col, row, size_x, size_y);
         }
 
-        var $w = $(html).attr({
+        var $widget = $('<'+this.options.widget_selector+'/>');
+
+        $widget.append(html);
+
+        $widget
+            .attr({
                 'data-col': pos.col,
                 'data-row': pos.row,
-                'data-sizex' : size_x,
-                'data-sizey' : size_y
-            }).addClass('gs_w').appendTo(this.$el).hide();
+                'data-sizex': size_x,
+                'data-sizey': size_y
+            })
+            .addClass('gs_w')
+            .appendTo(this.$el)
+            .hide()
+            ;
 
-        this.$widgets = this.$widgets.add($w);
-        this.$changed = this.$changed.add($w);
+        this.$widgets = this.$widgets.add($widget);
+        this.$changed = this.$changed.add($widget);
 
-        this.register_widget($w);
+        this.register_widget($widget);
 
         this.add_faux_rows(pos.size_y);
         //this.add_faux_cols(pos.size_x);
 
         this.set_dom_grid_height();
 
-        return $w.fadeIn();
+        return $widget.fadeIn();
     };
 
 
@@ -1255,9 +1264,11 @@
         $widgets || ($widgets = this.$widgets);
         var result = [];
         $widgets.each($.proxy(function(i, widget) {
-            if(typeof($(widget).coords().grid) != "undefined"){
+            var $widget = $(widget);
+
+            if($widget.coords().grid !== undefined) {
                 result.push(this.options.serialize_params(
-                $(widget), $(widget).coords().grid ) );
+                $widget, $widget.coords().grid ) );
             }
         }, this));
 
@@ -1300,7 +1311,7 @@
         ) {
             /*if(!$el.hasClass('.disp_ad')){
                 $el.remove();
-                return false;   
+                return false;
             }*/
             wgd = this.next_position(wgd.size_x, wgd.size_y);
             wgd.el = $el;
@@ -1692,7 +1703,7 @@
         var placeholder_cells = this.cells_occupied_by_placeholder;
         var $gr = this;
 
-        
+
         //Queue Swaps
         $overlapped_widgets.each($.proxy(function(i, w){
             var $w = $(w);
@@ -1821,7 +1832,7 @@
                 }
             }
         }
-        
+
         return occupied;
     }
 
@@ -1901,10 +1912,10 @@
 
                     }
                 }
-                    
+
             }
         }
-    
+
         return queued
     }
 
@@ -1914,7 +1925,7 @@
 
         if ((key in this.w_queue)){
             if (this.w_queue[key] == "full"){
-               queued = true; 
+               queued = true;
             } else {
                 $tw = this.w_queue[key];
                 tgd = $tw.coords().grid;
@@ -1928,7 +1939,7 @@
                     queued = true;
                 }
             }
-        } 
+        }
 
         return queued;
     }
@@ -2342,7 +2353,7 @@
                 if (can_go_widget_up) {
                     this.move_widget_to($w, can_go_widget_up);
                 }
-                
+
             }, this));
         }
 
