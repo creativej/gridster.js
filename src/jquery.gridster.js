@@ -530,9 +530,11 @@
         $widgets || ($widgets = this.$widgets);
         var result = [];
         $widgets.each($.proxy(function(i, widget) {
-            if(typeof($(widget).coords().grid) != "undefined"){
+            var $widget = $(widget);
+
+            if($widget.coords().grid !== undefined) {
                 result.push(this.options.serialize_params(
-                $(widget), $(widget).coords().grid ) );
+                $widget, $widget.coords().grid ) );
             }
         }, this));
 
