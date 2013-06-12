@@ -172,24 +172,33 @@
             this.empty_cells(col, row, size_x, size_y);
         }
 
-        var $w = $(html).attr({
+        var $widget = $('<'+this.options.widget_selector+'/>');
+
+        $widget.append(html);
+
+        $widget
+            .attr({
                 'data-col': pos.col,
                 'data-row': pos.row,
-                'data-sizex' : size_x,
-                'data-sizey' : size_y
-            }).addClass('gs_w').appendTo(this.$el).hide();
+                'data-sizex': size_x,
+                'data-sizey': size_y
+            })
+            .addClass('gs_w')
+            .appendTo(this.$el)
+            .hide()
+            ;
 
-        this.$widgets = this.$widgets.add($w);
-        this.$changed = this.$changed.add($w);
+        this.$widgets = this.$widgets.add($widget);
+        this.$changed = this.$changed.add($widget);
 
-        this.register_widget($w);
+        this.register_widget($widget);
 
         this.add_faux_rows(pos.size_y);
         //this.add_faux_cols(pos.size_x);
 
         this.set_dom_grid_height();
 
-        return $w.fadeIn();
+        return $widget.fadeIn();
     };
 
 
